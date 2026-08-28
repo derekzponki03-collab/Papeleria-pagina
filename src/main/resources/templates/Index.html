@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Papelería Milys - Catálogo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Papelería Milys</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link btn btn-outline-light text-white px-3" href="/carrito">🛒 Mi Carrito</a>
+                <a class="nav-link ms-3" href="/lista">🔑 Panel Admin</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">Papelería Milys</h1>
+            <p class="lead">Todo lo que necesitas para tus tareas, oficina y proyectos creativos.</p>
+        </div>
+        <h2 class="mb-4 text-secondary">Nuestros Productos</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="producto : ${productos}">
+                <div class="card h-100 shadow-sm">
+                    <img th:if="${producto.rutaImage != null}" th:src="@{'/imgs/' + ${producto.rutaImage}}" class="card-img-top p-3" style="height: 200px; object-fit: contain;">
+                    <img th:unless="${producto.rutaImage != null}" src="https://via.placeholder.com/200x200?text=Sin+Imagen" class="card-img-top p-3" style="height: 200px; object-fit: contain;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold" th:text="${producto.nombre}">Nombre</h5>
+                        <p class="card-text text-success fs-5 fw-semibold" th:text="${'$ ' + #numbers.formatDecimal(producto.precio, 1, 2)}">$0.00</p>
+                        <form th:action="@{/carrito/agregar}" method="post">
+                            <input type="hidden" name="id" th:value="${producto.id}">
+                            <div class="input-group mb-3 justify-content-center">
+                                <span class="input-group-text">Cant</span>
+                                <input type="number" name="cantidad" value="1" min="1" class="form-control text-center" style="max-width: 70px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
